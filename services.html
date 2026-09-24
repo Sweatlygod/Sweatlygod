@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Услуги — Sweatlygod</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --accent1: #ff9800;
+            --accent2: #ff5722;
+            --accent3: #a855f7;
+            --bg1: #0a0a1a;
+            --text: #eaeaea;
+            --muted: #9a9aad;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg1);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -2;
+            pointer-events: none;
+        }
+        body::before {
+            width: 500px; height: 500px;
+            background: rgba(168, 85, 247, 0.25);
+            top: -150px; right: -150px;
+            animation: drift 20s ease-in-out infinite alternate;
+        }
+        body::after {
+            width: 600px; height: 600px;
+            background: rgba(255, 152, 0, 0.22);
+            bottom: -200px; left: -200px;
+            animation: drift 25s ease-in-out infinite alternate-reverse;
+        }
+        @keyframes drift {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(-80px, 60px) scale(1.15); }
+        }
+
+        .bg-animation {
+            position: fixed; inset: 0;
+            z-index: -1; overflow: hidden; pointer-events: none;
+        }
+        .bg-animation span {
+            position: absolute;
+            display: block;
+            background: rgba(168, 85, 247, 0.35);
+            border-radius: 50%;
+            animation: float 15s linear infinite;
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+        }
+        @keyframes float {
+            0% { transform: translateY(105vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) scale(1); opacity: 0; }
+        }
+
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; justify-content: center; gap: 30px;
+            padding: 18px 20px;
+            background: rgba(10, 10, 26, 0.75);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 152, 0, 0.18);
+        }
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            position: relative;
+            padding: 6px 4px;
+            transition: color 0.3s;
+        }
+        nav a:hover, nav a.active { color: var(--accent1); }
+        nav a::after {
+            content: '';
+            position: absolute;
+            left: 0; bottom: 0;
+            width: 0; height: 2px;
+            background: linear-gradient(90deg, var(--accent1), var(--accent2));
+            transition: width 0.3s;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+
+        header {
+            text-align: center;
+            padding: 80px 20px 30px;
+            animation: fadeInDown 1s ease;
+        }
+        header h1 {
+            font-size: clamp(32px, 6vw, 52px);
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, #ffb74d, #ff9800, #a855f7);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 5s ease infinite;
+        }
+        @keyframes shine {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        header p {
+            color: var(--muted);
+            font-size: 17px;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        section {
+            max-width: 950px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        h2 {
+            font-size: clamp(24px, 4vw, 32px);
+            margin-bottom: 30px;
+            color: var(--accent1);
+            text-align: center;
+            font-weight: 800;
+            position: relative;
+        }
+        h2::after {
+            content: '';
+            display: block;
+            width: 70px; height: 4px;
+            background: linear-gradient(90deg, var(--accent1), var(--accent3));
+            margin: 14px auto 0;
+            border-radius: 4px;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 22px;
+            padding: 38px 35px;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.35s;
+        }
+        .service-card:hover {
+            border-color: rgba(255, 152, 0, 0.5);
+            box-shadow: 0 20px 60px rgba(255, 152, 0, 0.2);
+            transform: translateY(-5px);
+        }
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 152, 0, 0.06), transparent);
+            transition: left 0.7s;
+        }
+        .service-card:hover::before { left: 100%; }
+
+        .service-card h3 {
+            color: var(--accent1);
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .service-card p {
+            color: #c8c8d5;
+            line-height: 1.8;
+            font-size: 16px;
+            margin-bottom: 14px;
+        }
+
+        .price-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent1), var(--accent2));
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 18px;
+            padding: 10px 22px;
+            border-radius: 14px;
+            margin-top: 10px;
+            box-shadow: 0 8px 30px rgba(255, 87, 34, 0.4);
+        }
+        .price-tag.free {
+            background: linear-gradient(135deg, #00ff88, #00b86b);
+            box-shadow: 0 8px 30px rgba(0, 255, 136, 0.4);
+        }
+
+        .discord-block {
+            background: linear-gradient(135deg, rgba(88, 101, 242, 0.15), rgba(168, 85, 247, 0.12));
+            border: 1px solid rgba(88, 101, 242, 0.5);
+            border-radius: 22px;
+            padding: 40px 35px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.35s;
+        }
+        .discord-block:hover {
+            box-shadow: 0 20px 60px rgba(88, 101, 242, 0.3);
+            transform: translateY(-5px);
+        }
+        .discord-block h3 {
+            color: #7289da;
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .discord-block p {
+            color: #c8c8d5;
+            line-height: 1.8;
+            font-size: 16px;
+            margin-bottom: 14px;
+        }
+
+        .contact-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 22px;
+        }
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 32px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            color: #fff;
+        }
+        .contact-btn.tg {
+            background: linear-gradient(135deg, #229ed9, #0088cc);
+            box-shadow: 0 10px 35px rgba(34, 158, 217, 0.5);
+        }
+        .contact-btn.ds {
+            background: linear-gradient(135deg, #5865f2, #8b5cf6);
+            box-shadow: 0 10px 35px rgba(88, 101, 242, 0.5);
+        }
+        .contact-btn:hover {
+            transform: translateY(-4px) scale(1.04);
+            box-shadow: 0 16px 50px rgba(255, 255, 255, 0.25);
+        }
+        .contact-btn::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+            transition: left 0.6s;
+        }
+        .contact-btn:hover::after { left: 100%; }
+
+        .user-tag {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-left: 6px;
+        }
+
+        .cta-block {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.12), rgba(168, 85, 247, 0.12));
+            border: 1px solid rgba(255, 152, 0, 0.35);
+            border-radius: 22px;
+            padding: 45px 30px;
+        }
+        .cta-block h3 {
+            font-size: 26px;
+            color: var(--accent1);
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+        .cta-block p {
+            color: var(--muted);
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 50px 20px 30px;
+            color: #5a5a6e;
+            font-size: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: 80px;
+        }
+        footer span { color: var(--accent1); }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.9s ease, transform 0.9s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            nav { gap: 18px; padding: 14px 10px; }
+            nav a { font-size: 13px; }
+            .service-card, .discord-block { padding: 28px 22px; }
+            .cta-block { padding: 32px 22px; }
+            .contact-buttons { flex-direction: column; }
+            .contact-btn { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation" id="bg"></div>
+
+    <nav>
+        <a href="index.html">Главная</a>
+        <a href="services.html" class="active">Услуги</a>
+        <a href="index.html#contacts">Контакты</a>
+    </nav>
+
+    <header>
+        <h1>Мои услуги</h1>
+        <p>Делаю моды, читы, ресурс-паки и не только</p>
+    </header>
+
+    <section class="reveal">
+        <h2>Что я делаю</h2>
+
+        <div class="service-card">
+            <h3>⚙️ Моды, читы и прочее</h3>
+            <p>Напишу мод, чит или другую программу под твои задачи. Minecraft, утилиты, автоматизация — обсудим детали и сделаю под ключ.</p>
+            <p><strong>Что входит:</strong> обсуждение ТЗ, разработка, тестирование, правки.</p>
+            <span class="price-tag">💰 от 250 до 700 ₽</span>
+        </div>
+
+        <div class="service-card">
+            <h3>🎨 Ресурс-паки</h3>
+            <p>Сделаю ресурс-пак под твой стиль: текстуры, звуки, модели, кастомные элементы. Есть возможность сделать это <strong>бесплатно</strong> — по договорённости.</p>
+            <p><strong>Что входит:</strong> подбор стиля, отрисовка/сборка, упаковка в <code>.zip</code>.</p>
+            <span class="price-tag free">🎁 Возможно бесплатно</span>
+        </div>
+    </section>
+
+    <section class="reveal">
+        <h2>Мой Discord-сервер</h2>
+        <div class="discord-block">
+            <h3>💬 Sweatlygod Community</h3>
+            <p>Развиваю свой Discord-сервер, где собрано <strong>русское и английское комьюнити</strong>. Общаемся, играем, помогаем друг другу.</p>
+            <p>🔥 <strong>Идёт активный набор в Staff и в команду!</strong> Если хочешь стать частью проекта — заходи и пиши.</p>
+            <div class="contact-buttons">
+                <a href="https://discord.gg/zN842WM7C" target="_blank" class="contact-btn ds">
+                    🌐 Зайти на сервер
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="reveal">
+        <h2>Связаться со мной</h2>
+        <div class="cta-block">
+            <h3>Готов обсудить заказ?</h3>
+            <p>Пиши в Telegram или Discord — отвечу быстро, обсудим детали и сроки.</p>
+            <div class="contact-buttons" style="justify-content: center;">
+                <a href="https://t.me/cigarettesow" target="_blank" class="contact-btn tg">
+                    ✈️ Telegram <span class="user-tag">@cigarettesow</span>
+                </a>
+                <a href="https://discord.com/users/.soc1alfuck3r" target="_blank" class="contact-btn ds">
+                    💬 Discord <span class="user-tag">.soc1alfuck3r</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        © 2026 <span>Sweatlygod</span>. Сделано с ❤️
+    </footer>
+
+    <script>
+        const bg = document.getElementById('bg');
+        for (let i = 0; i < 30; i++) {
+            const s = document.createElement('span');
+            const size = 4 + Math.random() * 12;
+            s.style.left = Math.random() * 100 + '%';
+            s.style.width = s.style.height = size + 'px';
+            s.style.animationDelay = Math.random() * 15 + 's';
+            s.style.animationDuration = (10 + Math.random() * 12) + 's';
+            bg.appendChild(s);
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) e.target.classList.add('visible');
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>
