@@ -112,7 +112,6 @@ header.hero { text-align: center; padding: 90px 20px 50px; }
   display: block;
   filter: contrast(1.15) brightness(1.1);
 }
-}
 .avatar::before {
   content: ''; position: absolute; inset: -6px;
   border-radius: 50%;
@@ -368,6 +367,25 @@ h2::after {
   padding: 3px 10px; border-radius: 6px;
   font-size: 13px; margin-left: 6px;
 }
+
+/* Подпись "(кликабельно)" */
+.clickable-note {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.5px;
+  margin-top: 10px;
+  opacity: 0.7;
+  transition: opacity 0.3s, color 0.3s;
+}
+.clickable-note::before { content: '↳ '; color: var(--accent3); }
+a:hover + .clickable-note,
+.contact-buttons a:hover ~ .clickable-note {
+  opacity: 1;
+  color: var(--accent3);
+}
+
 .contacts { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
 .contacts a {
   display: inline-flex; align-items: center; gap: 10px;
@@ -411,11 +429,11 @@ footer span { color: var(--accent3); text-shadow: 0 0 15px rgba(0, 229, 255, 0.5
   nav { gap: 18px; padding: 14px 10px; }
   nav button { font-size: 13px; }
   header.hero { padding: 60px 20px 30px; }
-  .avatar { width: 130px; height: 130px; font-size: 56px; }
+  .avatar { width: 140px; height: 140px; }
   .coder-badge { grid-template-columns: 1fr; padding: 25px 20px; }
   .tier-row { flex-direction: column; gap: 8px; align-items: flex-start; }
   .service-card, .discord-block { padding: 28px 22px; }
-  .contact-buttons { flex-direction: column; }
+  .contact-buttons { flex-direction: column; align-items: stretch; }
   .contact-btn { justify-content: center; }
 }
 </style>
@@ -562,6 +580,7 @@ footer span { color: var(--accent3); text-shadow: 0 0 15px rgba(0, 229, 255, 0.5
       <div class="contact-buttons">
         <a href="https://discord.gg/zN842WM7C" target="_blank" class="contact-btn ds">🌐 Зайти на сервер</a>
       </div>
+      <span class="clickable-note">ссылка кликабельна</span>
     </div>
   </section>
 </div>
@@ -585,6 +604,20 @@ footer span { color: var(--accent3); text-shadow: 0 0 15px rgba(0, 229, 255, 0.5
           💬 Discord <span class="user-tag">.soc1alfuck3r</span>
         </a>
       </div>
+      <span class="clickable-note">ссылки кликабельны</span>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Мой Discord-сервер</h2>
+    <div class="discord-block">
+      <h3>💬 Sweatlygod Community</h3>
+      <p>Развиваю свой Discord-сервер, где собрано <strong>русское и английское комьюнити</strong>. Общаемся, играем, помогаем друг другу.</p>
+      <p>🔥 <strong>Идёт активный набор в Staff и в команду!</strong> Если хочешь стать частью проекта — заходи и пиши.</p>
+      <div class="contact-buttons">
+        <a href="https://discord.gg/zN842WM7C" target="_blank" class="contact-btn ds">🌐 Зайти на сервер</a>
+      </div>
+      <span class="clickable-note">ссылка кликабельна</span>
     </div>
   </section>
 </div>
@@ -607,12 +640,4 @@ for (let i = 0; i < 30; i++) {
 
 function showPage(name, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-</script>
-
-</body>
-</html>
+  document
