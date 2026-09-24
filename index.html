@@ -95,22 +95,15 @@ nav button:hover::after, nav button.active::after { width: 100%; }
 }
 header.hero { text-align: center; padding: 90px 20px 50px; }
 .avatar {
-  width: 180px; height: 180px;
+  width: 160px; height: 160px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--accent2), var(--accent1));
   display: flex; align-items: center; justify-content: center;
+  font-size: 70px; font-weight: 800;
   margin: 0 auto 28px;
-  position: relative;
-  overflow: hidden;
+  position: relative; color: #fff;
   box-shadow: 0 0 60px rgba(124, 77, 255, 0.8);
   animation: pulse 2.5s infinite;
-}
-.avatar img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  display: block;
-  filter: contrast(1.15) brightness(1.1);
 }
 .avatar::before {
   content: ''; position: absolute; inset: -6px;
@@ -410,7 +403,7 @@ footer span { color: var(--accent3); text-shadow: 0 0 15px rgba(0, 229, 255, 0.5
   nav { gap: 18px; padding: 14px 10px; }
   nav button { font-size: 13px; }
   header.hero { padding: 60px 20px 30px; }
-  .avatar { width: 140px; height: 140px; }
+  .avatar { width: 130px; height: 130px; font-size: 56px; }
   .coder-badge { grid-template-columns: 1fr; padding: 25px 20px; }
   .tier-row { flex-direction: column; gap: 8px; align-items: flex-start; }
   .service-card, .discord-block { padding: 28px 22px; }
@@ -432,7 +425,7 @@ footer span { color: var(--accent3); text-shadow: 0 0 15px rgba(0, 229, 255, 0.5
 <!-- ГЛАВНАЯ -->
 <div id="page-home" class="page active">
   <header class="hero">
-    <div class="avatar"><img src="avatar.jpg" alt="Sweatlygod"></div>
+    <div class="avatar">S</div>
     <h1>Привет, я - Sweatlygod</h1>
     <p class="subtitle">Мододел • Разработчик утилит • PvP-игрок</p>
     <div class="hero-buttons">
