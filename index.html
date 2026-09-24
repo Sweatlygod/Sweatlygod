@@ -1,624 +1,617 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sweatlygod — Мододел</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --accent1: #ff9800;
-            --accent2: #ff5722;
-            --accent3: #a855f7;
-            --bg1: #0a0a1a;
-            --text: #eaeaea;
-            --muted: #9a9aad;
-        }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: var(--bg1);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        body::before, body::after {
-            content: '';
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(120px);
-            z-index: -2;
-            pointer-events: none;
-        }
-        body::before {
-            width: 500px; height: 500px;
-            background: rgba(255, 152, 0, 0.25);
-            top: -150px; left: -150px;
-            animation: drift 20s ease-in-out infinite alternate;
-        }
-        body::after {
-            width: 600px; height: 600px;
-            background: rgba(168, 85, 247, 0.25);
-            bottom: -200px; right: -200px;
-            animation: drift 25s ease-in-out infinite alternate-reverse;
-        }
-        @keyframes drift {
-            from { transform: translate(0, 0) scale(1); }
-            to { transform: translate(80px, 60px) scale(1.15); }
-        }
-
-        .bg-animation {
-            position: fixed; inset: 0;
-            z-index: -1; overflow: hidden; pointer-events: none;
-        }
-        .bg-animation span {
-            position: absolute;
-            display: block;
-            background: rgba(255, 152, 0, 0.35);
-            border-radius: 50%;
-            animation: float 15s linear infinite;
-            box-shadow: 0 0 12px rgba(255, 152, 0, 0.6);
-        }
-        @keyframes float {
-            0% { transform: translateY(105vh) scale(0); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100px) scale(1); opacity: 0; }
-        }
-
-        nav {
-            position: sticky; top: 0; z-index: 100;
-            display: flex; justify-content: center; gap: 30px;
-            padding: 18px 20px;
-            background: rgba(10, 10, 26, 0.75);
-            backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(255, 152, 0, 0.18);
-        }
-        nav a {
-            color: var(--muted);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 15px;
-            letter-spacing: 0.5px;
-            position: relative;
-            padding: 6px 4px;
-            transition: color 0.3s;
-        }
-        nav a:hover, nav a.active { color: var(--accent1); }
-        nav a::after {
-            content: '';
-            position: absolute;
-            left: 0; bottom: 0;
-            width: 0; height: 2px;
-            background: linear-gradient(90deg, var(--accent1), var(--accent2));
-            transition: width 0.3s;
-        }
-        nav a:hover::after, nav a.active::after { width: 100%; }
-
-        header {
-            text-align: center;
-            padding: 90px 20px 50px;
-            animation: fadeInDown 1s ease;
-        }
-
-        .avatar {
-            width: 160px; height: 160px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent1), var(--accent2));
-            display: flex; align-items: center; justify-content: center;
-            font-size: 70px; font-weight: 800;
-            margin: 0 auto 28px;
-            position: relative;
-            box-shadow: 0 0 60px rgba(255, 152, 0, 0.7);
-            animation: pulse 2.5s infinite;
-        }
-        .avatar::before {
-            content: '';
-            position: absolute; inset: -6px;
-            border-radius: 50%;
-            background: conic-gradient(var(--accent1), var(--accent3), var(--accent2), var(--accent1));
-            z-index: -1;
-            animation: spin 6s linear infinite;
-            filter: blur(2px);
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 60px rgba(255, 152, 0, 0.7); }
-            50% { box-shadow: 0 0 95px rgba(255, 152, 0, 1); }
-        }
-
-        h1 {
-            font-size: clamp(32px, 6vw, 52px);
-            font-weight: 800;
-            margin-bottom: 16px;
-            background: linear-gradient(90deg, #ffb74d, #ff9800, #ff5722, #a855f7);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 5s ease infinite;
-        }
-        @keyframes shine {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .subtitle {
-            font-size: 18px;
-            color: var(--muted);
-            margin-bottom: 35px;
-            letter-spacing: 0.5px;
-        }
-
-        .hero-buttons {
-            display: flex; justify-content: center; gap: 16px;
-            flex-wrap: wrap;
-        }
-        .btn {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 14px 30px;
-            border-radius: 30px;
-            font-weight: 600;
-            text-decoration: none;
-            font-size: 15px;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            border: none;
-            font-family: inherit;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent1), var(--accent2));
-            color: #fff;
-            box-shadow: 0 8px 30px rgba(255, 87, 34, 0.5);
-        }
-        .btn-primary:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 14px 40px rgba(255, 87, 34, 0.8);
-        }
-        .btn-outline {
-            background: rgba(255, 152, 0, 0.1);
-            border: 1px solid rgba(255, 152, 0, 0.6);
-            color: var(--accent1);
-        }
-        .btn-outline:hover {
-            background: var(--accent1);
-            color: #fff;
-            transform: translateY(-3px) scale(1.03);
-        }
-
-        section {
-            max-width: 950px;
-            margin: 60px auto;
-            padding: 0 20px;
-        }
-
-        h2 {
-            font-size: clamp(24px, 4vw, 32px);
-            margin-bottom: 30px;
-            color: var(--accent1);
-            text-align: center;
-            position: relative;
-            font-weight: 800;
-        }
-        h2::after {
-            content: '';
-            display: block;
-            width: 70px; height: 4px;
-            background: linear-gradient(90deg, var(--accent1), var(--accent3));
-            margin: 14px auto 0;
-            border-radius: 4px;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 22px;
-        }
-        .card {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
-            padding: 30px 25px;
-            transition: all 0.35s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 152, 0, 0.08), transparent);
-            transition: left 0.6s;
-        }
-        .card:hover::before { left: 100%; }
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(255, 152, 0, 0.25);
-            border-color: rgba(255, 152, 0, 0.5);
-        }
-        .card h3 {
-            color: var(--accent1);
-            margin-bottom: 14px;
-            font-size: 20px;
-            font-weight: 700;
-        }
-        .card p {
-            color: #c8c8d5;
-            line-height: 1.7;
-            font-size: 15px;
-        }
-
-        .coder-badge {
-            display: grid;
-            grid-template-columns: 1.1fr 1fr;
-            gap: 30px;
-            align-items: center;
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.06), rgba(168, 85, 247, 0.08));
-            border: 1px solid rgba(0, 255, 136, 0.35);
-            border-radius: 22px;
-            padding: 35px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 15px 60px rgba(0, 255, 136, 0.12);
-        }
-        .coder-badge::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: conic-gradient(from 0deg, transparent, rgba(0, 255, 136, 0.06), transparent 30%);
-            animation: spin 14s linear infinite;
-            pointer-events: none;
-        }
-
-        .coder-terminal {
-            background: #0d0d1a;
-            border-radius: 14px;
-            overflow: hidden;
-            border: 1px solid rgba(0, 255, 136, 0.3);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            position: relative;
-            z-index: 1;
-        }
-        .terminal-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 14px;
-            background: rgba(255, 255, 255, 0.04);
-            border-bottom: 1px solid rgba(0, 255, 136, 0.15);
-        }
-        .dot {
-            width: 12px; height: 12px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        .dot.red { background: #ff5f57; }
-        .dot.yellow { background: #febc2e; }
-        .dot.green { background: #28c840; }
-        .terminal-title {
-            margin-left: auto;
-            color: #6a6a80;
-            font-size: 12px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-        .terminal-body {
-            padding: 18px 20px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            line-height: 1.9;
-        }
-        .terminal-body p { color: #c8c8d5; }
-        .prompt { color: #00ff88; font-weight: 700; }
-        .output { color: #9a9aad; padding-left: 18px; }
-        .hl { color: #ff9800; font-weight: 700; }
-        .hl-green { color: #00ff88; font-weight: 700; }
-        .cursor {
-            color: #00ff88;
-            animation: blink 1s step-end infinite;
-        }
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        .coder-text { position: relative; z-index: 1; }
-        .coder-text h3 {
-            color: #00ff88;
-            font-size: 26px;
-            font-weight: 800;
-            margin-bottom: 14px;
-            text-shadow: 0 0 25px rgba(0, 255, 136, 0.5);
-        }
-        .coder-text p {
-            color: #c8c8d5;
-            line-height: 1.7;
-            font-size: 15px;
-            margin-bottom: 20px;
-        }
-        .code-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .code-tag {
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid rgba(0, 255, 136, 0.4);
-            color: #00ff88;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            font-weight: 600;
-            padding: 5px 12px;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-        .code-tag:hover {
-            background: #00ff88;
-            color: #0a0a1a;
-            transform: translateY(-2px);
-        }
-
-        .tier-badge {
-            max-width: 700px;
-            margin: 0 auto;
-            background: linear-gradient(135deg, rgba(255, 152, 0, 0.12), rgba(168, 85, 247, 0.12));
-            border: 1px solid rgba(255, 152, 0, 0.35);
-            border-radius: 22px;
-            padding: 38px 32px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 15px 60px rgba(255, 152, 0, 0.15);
-        }
-        .tier-badge::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: conic-gradient(from 0deg, transparent, rgba(255, 152, 0, 0.08), transparent 30%);
-            animation: spin 12s linear infinite;
-            pointer-events: none;
-        }
-        .tier-badge h3 {
-            text-align: center;
-            color: var(--accent1);
-            font-size: 22px;
-            margin-bottom: 25px;
-            font-weight: 800;
-            position: relative;
-            z-index: 1;
-        }
-        .tier-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 0;
-            border-bottom: 1px dashed rgba(255, 152, 0, 0.25);
-            position: relative;
-            z-index: 1;
-            font-size: 16px;
-        }
-        .tier-row:last-child { border-bottom: none; }
-        .tier-label {
-            color: var(--muted);
-            font-weight: 600;
-        }
-        .tier-value {
-            color: #fff;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 600;
-            background: rgba(255, 152, 0, 0.15);
-            padding: 6px 14px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 152, 0, 0.35);
-        }
-        .tier-value.highlight {
-            background: linear-gradient(135deg, var(--accent1), var(--accent2));
-            color: #fff;
-            border: none;
-            box-shadow: 0 4px 20px rgba(255, 87, 34, 0.5);
-        }
-
-        .contacts {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-        .contacts a {
-            display: inline-flex; align-items: center; gap: 10px;
-            padding: 14px 26px;
-            background: rgba(255, 152, 0, 0.12);
-            border: 1px solid rgba(255, 152, 0, 0.5);
-            border-radius: 30px;
-            color: var(--accent1);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        .contacts a:hover {
-            background: linear-gradient(135deg, var(--accent1), var(--accent2));
-            color: #fff;
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 12px 35px rgba(255, 87, 34, 0.5);
-        }
-
-        footer {
-            text-align: center;
-            padding: 50px 20px 30px;
-            color: #5a5a6e;
-            font-size: 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            margin-top: 80px;
-        }
-        footer span { color: var(--accent1); }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.9s ease, transform 0.9s ease;
-        }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        @media (max-width: 700px) {
-            nav { gap: 18px; padding: 14px 10px; }
-            nav a { font-size: 13px; }
-            header { padding: 60px 20px 30px; }
-            .avatar { width: 130px; height: 130px; font-size: 56px; }
-            .tier-badge { padding: 26px 20px; }
-            .tier-row { font-size: 14px; flex-direction: column; gap: 8px; align-items: flex-start; }
-            .coder-badge { grid-template-columns: 1fr; padding: 25px 20px; }
-            .terminal-body { font-size: 12px; }
-            .coder-text h3 { font-size: 22px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sweatlygod — Мододел</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --accent1: #7c4dff;
+  --accent2: #3d5afe;
+  --accent3: #00e5ff;
+  --bg1: #060619;
+  --text: #eaeaea;
+  --muted: #9a9ac5;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--bg1);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+body::before, body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(130px);
+  z-index: -2;
+  pointer-events: none;
+}
+body::before {
+  width: 600px; height: 600px;
+  background: rgba(61, 90, 254, 0.35);
+  top: -200px; left: -200px;
+  animation: drift 18s ease-in-out infinite alternate;
+}
+body::after {
+  width: 700px; height: 700px;
+  background: rgba(168, 85, 247, 0.3);
+  bottom: -250px; right: -250px;
+  animation: drift 24s ease-in-out infinite alternate-reverse;
+}
+@keyframes drift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(100px, 80px) scale(1.2); }
+}
+.bg-animation { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.bg-animation span {
+  position: absolute; display: block;
+  background: rgba(0, 229, 255, 0.45);
+  border-radius: 50%;
+  animation: float 15s linear infinite;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.8);
+}
+@keyframes float {
+  0% { transform: translateY(105vh) scale(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100px) scale(1); opacity: 0; }
+}
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; justify-content: center; gap: 30px;
+  padding: 18px 20px;
+  background: rgba(6, 6, 25, 0.75);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(124, 77, 255, 0.25);
+}
+nav button {
+  background: none; border: none; cursor: pointer;
+  color: var(--muted);
+  font-family: inherit;
+  font-weight: 600; font-size: 15px;
+  letter-spacing: 0.5px; position: relative;
+  padding: 6px 4px; transition: color 0.3s;
+}
+nav button:hover, nav button.active { color: var(--accent3); }
+nav button::after {
+  content: ''; position: absolute;
+  left: 0; bottom: 0; width: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent3));
+  transition: width 0.3s;
+  box-shadow: 0 0 10px var(--accent3);
+}
+nav button:hover::after, nav button.active::after { width: 100%; }
+.page { display: none; animation: fadeIn 0.6s ease; }
+.page.active { display: block; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+header.hero { text-align: center; padding: 90px 20px 50px; }
+.avatar {
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent2), var(--accent1));
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 28px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(124, 77, 255, 0.8);
+  animation: pulse 2.5s infinite;
+}
+.avatar img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  filter: contrast(1.15) brightness(1.1);
+}
+.avatar::before {
+  content: ''; position: absolute; inset: -6px;
+  border-radius: 50%;
+  background: conic-gradient(var(--accent2), var(--accent3), var(--accent1), var(--accent2));
+  z-index: -1; animation: spin 6s linear infinite;
+  filter: blur(2px);
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 60px rgba(124, 77, 255, 0.8); }
+  50% { box-shadow: 0 0 95px rgba(0, 229, 255, 1); }
+}
+h1 {
+  font-size: clamp(32px, 6vw, 52px);
+  font-weight: 800; margin-bottom: 16px;
+  background: linear-gradient(90deg, #3d5afe, #7c4dff, #a855f7, #00e5ff, #3d5afe);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 5s ease infinite;
+}
+@keyframes shine {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.subtitle { font-size: 18px; color: var(--muted); margin-bottom: 35px; letter-spacing: 0.5px; }
+.hero-buttons { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 30px; border-radius: 30px;
+  font-weight: 600; font-size: 15px;
+  transition: all 0.3s; cursor: pointer;
+  border: none; font-family: inherit;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent2), var(--accent1));
+  color: #fff;
+  box-shadow: 0 8px 30px rgba(124, 77, 255, 0.6);
+}
+.btn-primary:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 14px 40px rgba(0, 229, 255, 0.8);
+}
+.btn-outline {
+  background: rgba(124, 77, 255, 0.1);
+  border: 1px solid rgba(0, 229, 255, 0.6);
+  color: var(--accent3);
+}
+.btn-outline:hover {
+  background: var(--accent3);
+  color: #060619;
+  transform: translateY(-3px) scale(1.03);
+}
+section.block { max-width: 950px; margin: 60px auto; padding: 0 20px; }
+h2 {
+  font-size: clamp(24px, 4vw, 32px);
+  margin-bottom: 30px; color: var(--accent3);
+  text-align: center; position: relative;
+  font-weight: 800;
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+}
+h2::after {
+  content: ''; display: block;
+  width: 70px; height: 4px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent1));
+  margin: 14px auto 0; border-radius: 4px;
+  box-shadow: 0 0 15px var(--accent1);
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 22px;
+}
+.card {
+  background: rgba(124, 77, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(124, 77, 255, 0.25);
+  border-radius: 18px; padding: 30px 25px;
+  transition: all 0.35s ease;
+  position: relative; overflow: hidden;
+}
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(124, 77, 255, 0.4);
+  border-color: rgba(0, 229, 255, 0.6);
+}
+.card h3 { color: var(--accent3); margin-bottom: 14px; font-size: 20px; font-weight: 700; }
+.card p { color: #c8c8e5; line-height: 1.7; font-size: 15px; }
+.coder-badge {
+  display: grid; grid-template-columns: 1.1fr 1fr;
+  gap: 30px; align-items: center;
+  background: linear-gradient(135deg, rgba(61, 90, 254, 0.1), rgba(168, 85, 247, 0.1));
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  border-radius: 22px; padding: 35px;
+  position: relative; overflow: hidden;
+  box-shadow: 0 15px 60px rgba(61, 90, 254, 0.2);
+}
+.coder-terminal {
+  background: #03031a; border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  box-shadow: 0 10px 40px rgba(0, 229, 255, 0.2);
+  position: relative; z-index: 1;
+}
+.terminal-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px;
+  background: rgba(0, 229, 255, 0.05);
+  border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+}
+.dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.dot.red { background: #ff5f57; }
+.dot.yellow { background: #febc2e; }
+.dot.green { background: #28c840; }
+.terminal-title {
+  margin-left: auto; color: var(--accent3);
+  font-size: 12px; font-family: 'JetBrains Mono', monospace;
+}
+.terminal-body {
+  padding: 18px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px; line-height: 1.9;
+}
+.terminal-body p { color: #c8c8e5; }
+.prompt { color: var(--accent3); font-weight: 700; }
+.output { color: #9a9ac5; padding-left: 18px; }
+.hl { color: var(--accent1); font-weight: 700; }
+.hl-green { color: #00ff88; font-weight: 700; }
+.cursor { color: var(--accent3); animation: blink 1s step-end infinite; }
+@keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+.coder-text { position: relative; z-index: 1; }
+.coder-text h3 {
+  color: var(--accent3); font-size: 26px; font-weight: 800;
+  margin-bottom: 14px;
+  text-shadow: 0 0 25px rgba(0, 229, 255, 0.6);
+}
+.coder-text p { color: #c8c8e5; line-height: 1.7; font-size: 15px; margin-bottom: 20px; }
+.code-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.code-tag {
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  color: var(--accent3);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; font-weight: 600;
+  padding: 5px 12px; border-radius: 8px;
+  transition: all 0.3s;
+}
+.code-tag:hover { background: var(--accent3); color: #060619; transform: translateY(-2px); }
+.tier-badge {
+  max-width: 700px; margin: 0 auto;
+  background: linear-gradient(135deg, rgba(61, 90, 254, 0.12), rgba(168, 85, 247, 0.14));
+  border: 1px solid rgba(124, 77, 255, 0.45);
+  border-radius: 22px; padding: 38px 32px;
+  position: relative; overflow: hidden;
+  box-shadow: 0 15px 60px rgba(124, 77, 255, 0.25);
+}
+.tier-badge h3 {
+  text-align: center; color: var(--accent3);
+  font-size: 22px; margin-bottom: 25px; font-weight: 800;
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+}
+.tier-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px dashed rgba(0, 229, 255, 0.3);
+  font-size: 16px;
+}
+.tier-row:last-child { border-bottom: none; }
+.tier-label { color: var(--muted); font-weight: 600; }
+.tier-value {
+  color: #fff; font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  background: rgba(124, 77, 255, 0.2);
+  padding: 6px 14px; border-radius: 10px;
+  border: 1px solid rgba(0, 229, 255, 0.45);
+}
+.tier-value.highlight {
+  background: linear-gradient(135deg, var(--accent2), var(--accent1));
+  border: none;
+  box-shadow: 0 4px 20px rgba(124, 77, 255, 0.7);
+}
+.service-card {
+  background: rgba(124, 77, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(124, 77, 255, 0.25);
+  border-radius: 22px; padding: 38px 35px;
+  margin-bottom: 25px; transition: all 0.35s;
+}
+.service-card:hover {
+  border-color: rgba(0, 229, 255, 0.6);
+  box-shadow: 0 20px 60px rgba(124, 77, 255, 0.4);
+  transform: translateY(-5px);
+}
+.service-card h3 {
+  color: var(--accent3); font-size: 24px;
+  margin-bottom: 15px; font-weight: 800;
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+}
+.service-card p { color: #c8c8e5; line-height: 1.8; font-size: 16px; margin-bottom: 14px; }
+.price-tag {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent2), var(--accent1));
+  color: #fff; font-family: 'JetBrains Mono', monospace;
+  font-weight: 700; font-size: 18px;
+  padding: 10px 22px; border-radius: 14px;
+  margin-top: 10px;
+  box-shadow: 0 8px 30px rgba(124, 77, 255, 0.6);
+}
+.price-tag.free {
+  background: linear-gradient(135deg, #00e5ff, #00b8d4);
+  color: #060619;
+  box-shadow: 0 8px 30px rgba(0, 229, 255, 0.6);
+}
+.discord-block {
+  background: linear-gradient(135deg, rgba(88, 101, 242, 0.2), rgba(124, 77, 255, 0.2));
+  border: 1px solid rgba(88, 101, 242, 0.6);
+  border-radius: 22px; padding: 40px 35px;
+  transition: all 0.35s;
+}
+.discord-block:hover {
+  box-shadow: 0 20px 60px rgba(88, 101, 242, 0.5);
+  transform: translateY(-5px);
+}
+.discord-block h3 {
+  color: #8b9aff; font-size: 24px;
+  margin-bottom: 15px; font-weight: 800;
+}
+.discord-block p { color: #c8c8e5; line-height: 1.8; font-size: 16px; margin-bottom: 14px; }
+.contact-buttons { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 22px; }
+.contact-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 15px 32px; border-radius: 30px;
+  text-decoration: none; font-weight: 700; font-size: 16px;
+  transition: all 0.3s; color: #fff;
+}
+.contact-btn.tg {
+  background: linear-gradient(135deg, #229ed9, #0088cc);
+  box-shadow: 0 10px 35px rgba(34, 158, 217, 0.5);
+}
+.contact-btn.ds {
+  background: linear-gradient(135deg, #5865f2, #8b5cf6);
+  box-shadow: 0 10px 35px rgba(88, 101, 242, 0.5);
+}
+.contact-btn:hover {
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 16px 50px rgba(0, 229, 255, 0.6);
+}
+.user-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 3px 10px; border-radius: 6px;
+  font-size: 13px; margin-left: 6px;
+}
+.contacts { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+.contacts a {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 26px;
+  background: rgba(124, 77, 255, 0.12);
+  border: 1px solid rgba(0, 229, 255, 0.5);
+  border-radius: 30px;
+  color: var(--accent3);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.contacts a:hover {
+  background: linear-gradient(135deg, var(--accent2), var(--accent1));
+  color: #fff;
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 35px rgba(124, 77, 255, 0.7);
+  border-color: transparent;
+}
+.cta-block {
+  text-align: center;
+  background: linear-gradient(135deg, rgba(61, 90, 254, 0.12), rgba(168, 85, 247, 0.12));
+  border: 1px solid rgba(124, 77, 255, 0.45);
+  border-radius: 22px; padding: 45px 30px;
+  box-shadow: 0 15px 60px rgba(61, 90, 254, 0.25);
+}
+.cta-block h3 {
+  font-size: 26px; color: var(--accent3);
+  margin-bottom: 15px; font-weight: 800;
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+}
+.cta-block p { color: var(--muted); margin-bottom: 25px; font-size: 16px; }
+footer {
+  text-align: center; padding: 50px 20px 30px;
+  color: #5a5a8e; font-size: 14px;
+  border-top: 1px solid rgba(124, 77, 255, 0.15);
+  margin-top: 80px;
+}
+footer span { color: var(--accent3); text-shadow: 0 0 15px rgba(0, 229, 255, 0.5); }
+@media (max-width: 700px) {
+  nav { gap: 18px; padding: 14px 10px; }
+  nav button { font-size: 13px; }
+  header.hero { padding: 60px 20px 30px; }
+  .avatar { width: 140px; height: 140px; }
+  .coder-badge { grid-template-columns: 1fr; padding: 25px 20px; }
+  .tier-row { flex-direction: column; gap: 8px; align-items: flex-start; }
+  .service-card, .discord-block { padding: 28px 22px; }
+  .contact-buttons { flex-direction: column; }
+  .contact-btn { justify-content: center; }
+}
+</style>
 </head>
 <body id="top">
 
-    <div class="bg-animation" id="bg"></div>
+<div class="bg-animation" id="bg"></div>
 
-    <nav>
-        <a href="#top" class="active">Главная</a>
-        <a href="services.html">Услуги</a>
-        <a href="#contacts">Контакты</a>
-    </nav>
+<nav>
+  <button class="active" onclick="showPage('home', this)">Главная</button>
+  <button onclick="showPage('services', this)">Услуги</button>
+  <button onclick="showPage('contacts', this)">Контакты</button>
+</nav>
 
-    <header>
-        <div class="avatar">S</div>
-        <h1>Привет, я - Sweatlygod</h1>
-        <p class="subtitle">Мододел • Разработчик утилит • PvP-игрок</p>
-        <div class="hero-buttons">
-            <a href="services.html" class="btn btn-primary">🚀 Мои услуги</a>
-            <a href="#tiers" class="btn btn-outline">🏆 Мои тиры</a>
+<!-- ГЛАВНАЯ -->
+<div id="page-home" class="page active">
+  <header class="hero">
+    <div class="avatar"><img src="avatar.jpg" alt="Sweatlygod"></div>
+    <h1>Привет, я - Sweatlygod</h1>
+    <p class="subtitle">Мододел • Разработчик утилит • PvP-игрок</p>
+    <div class="hero-buttons">
+      <button class="btn btn-primary" onclick="showPage('services', document.querySelectorAll('nav button')[1])">🚀 Мои услуги</button>
+      <button class="btn btn-outline" onclick="document.getElementById('tiers').scrollIntoView()">🏆 Мои тиры</button>
+    </div>
+  </header>
+
+  <section class="block">
+    <h2>Обо мне</h2>
+    <div class="card">
+      <p>Я мододел, могу делать различные моды, и вспомогающие утилиты. Также активно развиваю своё комьюнити в Discord и играю в PvP-режимах Minecraft.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="coder-badge">
+      <div class="coder-terminal">
+        <div class="terminal-header">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+          <span class="terminal-title">sweatlygod@dev ~ %</span>
         </div>
-    </header>
-
-    <section class="reveal">
-        <h2>Обо мне</h2>
-        <div class="card">
-            <p>Я мододел, могу делать различные моды, и вспомогающие утилиты. Также активно развиваю своё комьюнити в Discord и играю в PvP-режимах Minecraft.</p>
+        <div class="terminal-body">
+          <p><span class="prompt">$</span> whoami</p>
+          <p class="output">→ Sweatlygod — <span class="hl">coder</span> &amp; modder</p>
+          <p><span class="prompt">$</span> status</p>
+          <p class="output">→ <span class="hl-green">● online</span> • writing code...</p>
+          <p><span class="prompt">$</span> <span class="cursor">▊</span></p>
         </div>
-    </section>
-
-    <section class="reveal">
-        <div class="coder-badge">
-            <div class="coder-terminal">
-                <div class="terminal-header">
-                    <span class="dot red"></span>
-                    <span class="dot yellow"></span>
-                    <span class="dot green"></span>
-                    <span class="terminal-title">sweatlygod@dev ~ %</span>
-                </div>
-                <div class="terminal-body">
-                    <p><span class="prompt">$</span> whoami</p>
-                    <p class="output">→ Sweatlygod — <span class="hl">coder</span> &amp; modder</p>
-                    <p><span class="prompt">$</span> status</p>
-                    <p class="output">→ <span class="hl-green">● online</span> • writing code...</p>
-                    <p><span class="prompt">$</span> <span class="cursor">▊</span></p>
-                </div>
-            </div>
-            <div class="coder-text">
-                <h3>Я — Кодер</h3>
-                <p>Пишу код, ломаю баги, создаю моды и утилиты. Если что-то можно автоматизировать — я это сделаю.</p>
-                <div class="code-tags">
-                    <span class="code-tag">&lt;/&gt; Java</span>
-                    <span class="code-tag">&lt;/&gt; Python</span>
-                    <span class="code-tag">&lt;/&gt; JavaScript</span>
-                    <span class="code-tag">&lt;/&gt; Batch</span>
-                </div>
-            </div>
+      </div>
+      <div class="coder-text">
+        <h3>Я — Кодер</h3>
+        <p>Пишу код, ломаю баги, создаю моды и утилиты. Если что-то можно автоматизировать — я это сделаю. Также могу помочь с <strong style="color: var(--accent3);">вайб-кодингом</strong>, если это нужно.</p>
+        <div class="code-tags">
+          <span class="code-tag">&lt;/&gt; Java</span>
+          <span class="code-tag">&lt;/&gt; Python</span>
+          <span class="code-tag">&lt;/&gt; JavaScript</span>
+          <span class="code-tag">&lt;/&gt; Batch</span>
+          <span class="code-tag">&lt;/&gt; C</span>
+          <span class="code-tag">&lt;/&gt; C++</span>
+          <span class="code-tag">&lt;/&gt; Vibe Coding</span>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <section class="reveal">
-        <h2>Что я умею</h2>
-        <div class="cards">
-            <div class="card">
-                <h3>🎮 Навык 1</h3>
-                <p>Играю в Minecraft, разбираюсь в модах.</p>
-            </div>
-            <div class="card">
-                <h3>💻 Навык 2</h3>
-                <p>Пишу батники, моды и скрипты.</p>
-            </div>
-            <div class="card">
-                <h3>🎨 Навык 3</h3>
-                <p>Могу делать сайты и так далее.</p>
-            </div>
-        </div>
-    </section>
+  <section class="block">
+    <h2>Что я умею</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>🎮 Навык 1</h3>
+        <p>Играю в Minecraft, разбираюсь в модах.</p>
+      </div>
+      <div class="card">
+        <h3>💻 Навык 2</h3>
+        <p>Пишу батники, моды и скрипты.</p>
+      </div>
+      <div class="card">
+        <h3>🎨 Навык 3</h3>
+        <p>Могу делать сайты и так далее.</p>
+      </div>
+    </div>
+  </section>
 
-    <section class="reveal" id="tiers">
-        <h2>Мои нынешние тиры</h2>
-        <div class="tier-badge">
-            <h3>🏆 Tier List</h3>
-            <div class="tier-row">
-                <span class="tier-label">Никнейм</span>
-                <span class="tier-value highlight">Sweatlygod</span>
-            </div>
-            <div class="tier-row">
-                <span class="tier-label">Mace</span>
-                <span class="tier-value">LT2 peak (now —)</span>
-            </div>
-            <div class="tier-row">
-                <span class="tier-label">Sword / Smace</span>
-                <span class="tier-value">LT3 • тестерка на SubCIS</span>
-            </div>
-        </div>
-    </section>
+  <section class="block" id="tiers">
+    <h2>Мои нынешние тиры</h2>
+    <div class="tier-badge">
+      <h3>🏆 Tier List</h3>
+      <div class="tier-row">
+        <span class="tier-label">Никнейм</span>
+        <span class="tier-value highlight">Sweatlygod</span>
+      </div>
+      <div class="tier-row">
+        <span class="tier-label">Mace</span>
+        <span class="tier-value">LT2 peak (now —)</span>
+      </div>
+      <div class="tier-row">
+        <span class="tier-label">Smace</span>
+        <span class="tier-value">LT3 • тестерка на SubCIS</span>
+      </div>
+      <div class="tier-row">
+        <span class="tier-label">Cart</span>
+        <span class="tier-value">LT3</span>
+      </div>
+    </div>
+  </section>
+</div>
 
-    <section class="reveal" id="contacts">
-        <h2>Связаться со мной</h2>
-        <div class="contacts">
-            <a href="https://t.me/cigarettesow" target="_blank">✈️ Telegram</a>
-            <a href="https://discord.com/users/.soc1alfuck3r" target="_blank">💬 Discord</a>
-            <a href="https://discord.gg/zN842WM7C" target="_blank">🌐 Мой Discord-сервер</a>
-        </div>
-    </section>
+<!-- УСЛУГИ -->
+<div id="page-services" class="page">
+  <header class="hero">
+    <h1>Мои услуги</h1>
+    <p class="subtitle">Делаю моды, читы, ресурс-паки и не только</p>
+  </header>
 
-    <footer>
-        © 2026 <span>Sweatlygod</span>. Сделано с ❤️
-    </footer>
+  <section class="block">
+    <h2>Что я делаю</h2>
+    <div class="service-card">
+      <h3>⚙️ Моды, читы и прочее</h3>
+      <p>Напишу мод, чит или другую программу под твои задачи. Minecraft, утилиты, автоматизация — обсудим детали и сделаю под ключ.</p>
+      <p><strong>Что входит:</strong> обсуждение ТЗ, разработка, тестирование, правки.</p>
+      <span class="price-tag">💰 от 250 до 700 ₽</span>
+    </div>
+    <div class="service-card">
+      <h3>🎨 Ресурс-паки</h3>
+      <p>Сделаю ресурс-пак под твой стиль: текстуры, звуки, модели, кастомные элементы. Есть возможность сделать это <strong>бесплатно</strong> — по договорённости.</p>
+      <p><strong>Что входит:</strong> подбор стиля, отрисовка/сборка, упаковка в .zip.</p>
+      <span class="price-tag free">🎁 Возможно бесплатно</span>
+    </div>
+    <div class="service-card">
+      <h3>🧠 Вайб-кодинг</h3>
+      <p>Помогу с вайб-кодингом — когда нужно быстро собрать проект, написать скрипт или автоматизировать рутину без лишней мороки. Работаем в потоке, обсуждаем идею и сразу пишем код.</p>
+      <p><strong>Что входит:</strong> консультация, написание кода, объяснение логики.</p>
+      <span class="price-tag">💡 по договорённости</span>
+    </div>
+  </section>
 
-    <script>
-        const bg = document.getElementById('bg');
-        for (let i = 0; i < 30; i++) {
-            const s = document.createElement('span');
-            const size = 4 + Math.random() * 12;
-            s.style.left = Math.random() * 100 + '%';
-            s.style.width = s.style.height = size + 'px';
-            s.style.animationDelay = Math.random() * 15 + 's';
-            s.style.animationDuration = (10 + Math.random() * 12) + 's';
-            bg.appendChild(s);
-        }
+  <section class="block">
+    <h2>Мой Discord-сервер</h2>
+    <div class="discord-block">
+      <h3>💬 Sweatlygod Community</h3>
+      <p>Развиваю свой Discord-сервер, где собрано <strong>русское и английское комьюнити</strong>. Общаемся, играем, помогаем друг другу.</p>
+      <p>🔥 <strong>Идёт активный набор в Staff и в команду!</strong> Если хочешь стать частью проекта — заходи и пиши.</p>
+      <div class="contact-buttons">
+        <a href="https://discord.gg/zN842WM7C" target="_blank" class="contact-btn ds">🌐 Зайти на сервер</a>
+      </div>
+    </div>
+  </section>
+</div>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (e.isIntersecting) e.target.classList.add('visible');
-            });
-        }, { threshold: 0.12 });
+<!-- КОНТАКТЫ -->
+<div id="page-contacts" class="page">
+  <header class="hero">
+    <h1>Связаться со мной</h1>
+    <p class="subtitle">Отвечу быстро — обсудим детали и сроки</p>
+  </header>
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    </script>
+  <section class="block">
+    <div class="cta-block">
+      <h3>Готов обсудить заказ?</h3>
+      <p>Пиши в Telegram или Discord — отвечу быстро.</p>
+      <div class="contact-buttons" style="justify-content: center;">
+        <a href="https://t.me/cigarettesow" target="_blank" class="contact-btn tg">
+          ✈️ Telegram <span class="user-tag">@cigarettesow</span>
+        </a>
+        <a href="https://discord.com/users/.soc1alfuck3r" target="_blank" class="contact-btn ds">
+          💬 Discord <span class="user-tag">.soc1alfuck3r</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  © 2026 <span>Sweatlygod</span>. Сделано с ❤️
+</footer>
+
+<script>
+const bg = document.getElementById('bg');
+for (let i = 0; i < 30; i++) {
+  const s = document.createElement('span');
+  const size = 4 + Math.random() * 12;
+  s.style.left = Math.random() * 100 + '%';
+  s.style.width = s.style.height = size + 'px';
+  s.style.animationDelay = Math.random() * 15 + 's';
+  s.style.animationDuration = (10 + Math.random() * 12) + 's';
+  bg.appendChild(s);
+}
+
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
 
 </body>
 </html>
