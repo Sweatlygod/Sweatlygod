@@ -528,7 +528,18 @@ footer span { color: var(--accent3); text-shadow: 0 0 15px rgba(0, 229, 255, 0.5
     <div class="service-card">
       <h3>⚔️ Коучинг по Mace / Smace (Spearmace)</h3>
       <p>Обучаю игре на Mace и Smace (Spearmace). Разберём механику, комбо, тайминги, движение, тактики против разных противников. Подойдёт как новичкам, так и тем, кто хочет поднять свой тир.</p>
-      <p><strong>Что входит:</strong> разбор реплеев, практика, индивидуальный план тренировок, разбор ошибок.</p>
+      
+      <p><strong>Что входит:</strong></p>
+      <ul style="color: #c8c8e5; line-height: 1.9; font-size: 15px; margin-left: 22px; margin-bottom: 16px;">
+        <li>Разбор реплеев и ошибок</li>
+        <li>Практика и индивидуальный план тренировок</li>
+        <li>Подбираем <strong style="color: var(--accent3);">удобные бинды</strong> под твою руку</li>
+        <li>Настраиваем <strong style="color: var(--accent3);">FOV</strong> и чувствительность мыши</li>
+        <li>Научу делать <strong style="color: var(--accent3);">станслейм</strong> (stun-slam) довольно быстро</li>
+        <li>Практика до <strong style="color: #00ff88;">максимального результата</strong></li>
+      </ul>
+
+      <p><strong>Формат:</strong> созвон в Discord, разбор в реальном времени, показ на своём экране, ответы на любые вопросы. Работаем в комфортном темпе, без душноты.</p>
       <p><strong>Стоимость:</strong> <span style="color: var(--accent3); font-weight: 700;">200 ₽</span> за занятие. По договорённости — <strong style="color: #00ff88;">бесплатно</strong>.</p>
       <p><strong>Связь:</strong> пиши в мой Discord или Telegram.</p>
       <div class="contact-buttons">
@@ -603,21 +614,4 @@ const bg = document.getElementById('bg');
 for (let i = 0; i < 30; i++) {
   const s = document.createElement('span');
   const size = 4 + Math.random() * 12;
-  s.style.left = Math.random() * 100 + '%';
-  s.style.width = s.style.height = size + 'px';
-  s.style.animationDelay = Math.random() * 15 + 's';
-  s.style.animationDuration = (10 + Math.random() * 12) + 's';
-  bg.appendChild(s);
-}
-
-function showPage(name, btn) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-</script>
-
-</body>
-</html>
+  s.style.left = Math.random() * 100 + '%
