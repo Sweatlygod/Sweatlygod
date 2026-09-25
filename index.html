@@ -614,4 +614,21 @@ const bg = document.getElementById('bg');
 for (let i = 0; i < 30; i++) {
   const s = document.createElement('span');
   const size = 4 + Math.random() * 12;
-  s.style.left = Math.random() * 100 + '%
+  s.style.left = Math.random() * 100 + '%';
+  s.style.width = s.style.height = size + 'px';
+  s.style.animationDelay = Math.random() * 15 + 's';
+  s.style.animationDuration = (10 + Math.random() * 12) + 's';
+  bg.appendChild(s);
+}
+
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
