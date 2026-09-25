@@ -313,15 +313,6 @@ h2::after {
   text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
 }
 .service-card p { color: #c8c8e5; line-height: 1.8; font-size: 16px; margin-bottom: 14px; }
-.price-tag {
-  display: inline-block;
-  background: linear-gradient(135deg, var(--accent2), var(--accent1));
-  color: #fff; font-family: 'JetBrains Mono', monospace;
-  font-weight: 700; font-size: 18px;
-  padding: 10px 22px; border-radius: 14px;
-  margin-top: 10px;
-  box-shadow: 0 8px 30px rgba(124, 77, 255, 0.6);
-}
 .discord-block {
   background: linear-gradient(135deg, rgba(88, 101, 242, 0.2), rgba(124, 77, 255, 0.2));
   border: 1px solid rgba(88, 101, 242, 0.6);
@@ -373,25 +364,6 @@ h2::after {
   opacity: 0.75;
 }
 .clickable-note::before { content: '↳ '; color: var(--accent3); }
-.contacts { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
-.contacts a {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 14px 26px;
-  background: rgba(124, 77, 255, 0.12);
-  border: 1px solid rgba(0, 229, 255, 0.5);
-  border-radius: 30px;
-  color: var(--accent3);
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s;
-}
-.contacts a:hover {
-  background: linear-gradient(135deg, var(--accent2), var(--accent1));
-  color: #fff;
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 12px 35px rgba(124, 77, 255, 0.7);
-  border-color: transparent;
-}
 .cta-block {
   text-align: center;
   background: linear-gradient(135deg, rgba(61, 90, 254, 0.12), rgba(168, 85, 247, 0.12));
@@ -623,4 +595,29 @@ footer span { color: var(--accent3); text-shadow: 0 0 15px rgba(0, 229, 255, 0.5
 </div>
 
 <footer>
-  © 2026 <span>Sweatlygod
+  © 2026 <span>Sweatlygod</span>. Сделано с ❤️
+</footer>
+
+<script>
+const bg = document.getElementById('bg');
+for (let i = 0; i < 30; i++) {
+  const s = document.createElement('span');
+  const size = 4 + Math.random() * 12;
+  s.style.left = Math.random() * 100 + '%';
+  s.style.width = s.style.height = size + 'px';
+  s.style.animationDelay = Math.random() * 15 + 's';
+  s.style.animationDuration = (10 + Math.random() * 12) + 's';
+  bg.appendChild(s);
+}
+
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
