@@ -146,6 +146,7 @@ h1 {
   font-weight: 600; font-size: 15px;
   transition: all 0.3s; cursor: pointer;
   border: none; font-family: inherit;
+  text-decoration: none;
 }
 .btn-primary {
   background: linear-gradient(135deg, var(--accent2), var(--accent1));
@@ -321,11 +322,6 @@ h2::after {
   margin-top: 10px;
   box-shadow: 0 8px 30px rgba(124, 77, 255, 0.6);
 }
-.price-tag.free {
-  background: linear-gradient(135deg, #00e5ff, #00b8d4);
-  color: #060619;
-  box-shadow: 0 8px 30px rgba(0, 229, 255, 0.6);
-}
 .discord-block {
   background: linear-gradient(135deg, rgba(88, 101, 242, 0.2), rgba(124, 77, 255, 0.2));
   border: 1px solid rgba(88, 101, 242, 0.6);
@@ -448,6 +444,7 @@ footer span { color: var(--accent3); text-shadow: 0 0 15px rgba(0, 229, 255, 0.5
     <div class="hero-buttons">
       <button class="btn btn-primary" onclick="showPage('services', document.querySelectorAll('nav button')[1])">🚀 Мои услуги</button>
       <button class="btn btn-outline" onclick="document.getElementById('tiers').scrollIntoView()">🏆 Мои тиры</button>
+      <a href="game.html" class="btn btn-outline" style="border-color: rgba(0,255,136,0.6); color: #00ff88;">🎮 Играть</a>
     </div>
   </header>
 
@@ -537,7 +534,7 @@ footer span { color: var(--accent3); text-shadow: 0 0 15px rgba(0, 229, 255, 0.5
 <div id="page-services" class="page">
   <header class="hero">
     <h1>Мои услуги</h1>
-    <p class="subtitle">Делаю моды, читы, ресурс-паки и не только</p>
+    <p class="subtitle">Делаю моды, читы, ресурс-паки, обучаю PvP</p>
   </header>
 
   <section class="block">
@@ -546,19 +543,32 @@ footer span { color: var(--accent3); text-shadow: 0 0 15px rgba(0, 229, 255, 0.5
       <h3>⚙️ Моды, читы и прочее</h3>
       <p>Напишу мод, чит или другую программу под твои задачи. Minecraft, утилиты, автоматизация — обсудим детали и сделаю под ключ.</p>
       <p><strong>Что входит:</strong> обсуждение ТЗ, разработка, тестирование, правки.</p>
-      <span class="price-tag">💰 от 250 до 700 ₽</span>
     </div>
     <div class="service-card">
       <h3>🎨 Ресурс-паки</h3>
-      <p>Сделаю ресурс-пак под твой стиль: текстуры, звуки, модели, кастомные элементы. Есть возможность сделать это <strong>бесплатно</strong> — по договорённости.</p>
+      <p>Сделаю ресурс-пак под твой стиль: текстуры, звуки, модели, кастомные элементы. Возможность сделать бесплатно — по договорённости.</p>
       <p><strong>Что входит:</strong> подбор стиля, отрисовка/сборка, упаковка в .zip.</p>
-      <span class="price-tag free">🎁 Возможно бесплатно</span>
     </div>
     <div class="service-card">
       <h3>🧠 Вайб-кодинг</h3>
       <p>Помогу с вайб-кодингом — когда нужно быстро собрать проект, написать скрипт или автоматизировать рутину без лишней мороки. Работаем в потоке, обсуждаем идею и сразу пишем код.</p>
       <p><strong>Что входит:</strong> консультация, написание кода, объяснение логики.</p>
-      <span class="price-tag">💡 по договорённости</span>
+    </div>
+    <div class="service-card">
+      <h3>⚔️ Коучинг по Mace / Smace (Spearmace)</h3>
+      <p>Обучаю игре на Mace и Smace (Spearmace). Разберём механику, комбо, тайминги, движение, тактики против разных противников. Подойдёт как новичкам, так и тем, кто хочет поднять свой тир.</p>
+      <p><strong>Что входит:</strong> разбор реплеев, практика, индивидуальный план тренировок, разбор ошибок.</p>
+      <p><strong>Стоимость:</strong> <span style="color: var(--accent3); font-weight: 700;">200 ₽</span> за занятие. По договорённости — <strong style="color: #00ff88;">бесплатно</strong>.</p>
+      <p><strong>Связь:</strong> пиши в мой Discord или Telegram.</p>
+      <div class="contact-buttons">
+        <a href="https://t.me/cigarettesow" target="_blank" class="contact-btn tg">
+          ✈️ Telegram <span class="user-tag">@cigarettesow</span>
+        </a>
+        <a href="https://discord.com/users/.soc1alfuck3r" target="_blank" class="contact-btn ds">
+          💬 Discord <span class="user-tag">.soc1alfuck3r</span>
+        </a>
+      </div>
+      <span class="clickable-note">ссылки кликабельны</span>
     </div>
   </section>
 
@@ -608,35 +618,4 @@ footer span { color: var(--accent3); text-shadow: 0 0 15px rgba(0, 229, 255, 0.5
       <div class="contact-buttons">
         <a href="https://discord.gg/zN842WM7C" target="_blank" class="contact-btn ds">🌐 Зайти на сервер</a>
       </div>
-      <span class="clickable-note">ссылка кликабельна</span>
-    </div>
-  </section>
-</div>
-
-<footer>
-  © 2026 <span>Sweatlygod</span>. Сделано с ❤️
-</footer>
-
-<script>
-const bg = document.getElementById('bg');
-for (let i = 0; i < 30; i++) {
-  const s = document.createElement('span');
-  const size = 4 + Math.random() * 12;
-  s.style.left = Math.random() * 100 + '%';
-  s.style.width = s.style.height = size + 'px';
-  s.style.animationDelay = Math.random() * 15 + 's';
-  s.style.animationDuration = (10 + Math.random() * 12) + 's';
-  bg.appendChild(s);
-}
-
-function showPage(name, btn) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-</script>
-
-</body>
-</html>
+      <span class="
