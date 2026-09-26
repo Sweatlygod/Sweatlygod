@@ -384,6 +384,102 @@ footer {
   margin-top: 80px;
 }
 footer span { color: var(--accent3); text-shadow: 0 0 15px rgba(0, 229, 255, 0.5); }
+
+/* ===== МУЗЫКАЛЬНЫЙ ПЛЕЕР С ПРОГРЕСС-БАРОМ ===== */
+.music-player {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(6, 6, 25, 0.88);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(0, 229, 255, 0.5);
+  border-radius: 18px;
+  padding: 10px 16px 10px 10px;
+  box-shadow: 0 8px 30px rgba(124, 77, 255, 0.5);
+  transition: all 0.3s;
+  max-width: 380px;
+}
+.music-player:hover {
+  box-shadow: 0 12px 40px rgba(0, 229, 255, 0.7);
+  border-color: rgba(0, 229, 255, 0.9);
+}
+.music-btn {
+  width: 44px; height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent2), var(--accent1));
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 16px;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(124, 77, 255, 0.6);
+}
+.music-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 25px rgba(0, 229, 255, 0.9);
+}
+.music-btn.playing { animation: musicPulse 1.5s ease-in-out infinite; }
+@keyframes musicPulse {
+  0%, 100% { box-shadow: 0 4px 15px rgba(124, 77, 255, 0.6); }
+  50% { box-shadow: 0 4px 30px rgba(0, 229, 255, 1); }
+}
+.music-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  flex: 1;
+}
+.music-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.music-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent3);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.music-time {
+  font-size: 10px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+}
+.progress-container {
+  width: 100%;
+  height: 6px;
+  background: rgba(124, 77, 255, 0.2);
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent2), var(--accent3));
+  border-radius: 10px;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.8);
+}
+.progress-container:hover .progress-bar {
+  box-shadow: 0 0 18px rgba(0, 229, 255, 1);
+}
 @media (max-width: 700px) {
   nav { gap: 18px; padding: 14px 10px; }
   nav button { font-size: 13px; }
@@ -394,12 +490,31 @@ footer span { color: var(--accent3); text-shadow: 0 0 15px rgba(0, 229, 255, 0.5
   .service-card, .discord-block { padding: 28px 22px; }
   .contact-buttons { flex-direction: column; align-items: stretch; }
   .contact-btn { justify-content: center; }
+  .music-player { bottom: 10px; right: 10px; left: 10px; max-width: none; padding: 8px 14px 8px 8px; }
+  .music-btn { width: 38px; height: 38px; min-width: 38px; font-size: 14px; }
 }
 </style>
 </head>
 <body id="top">
 
 <div class="bg-animation" id="bg"></div>
+
+<!-- Музыкальный плеер с прогресс-баром -->
+<div class="music-player">
+  <button class="music-btn" id="musicBtn" onclick="toggleMusic()">▶</button>
+  <div class="music-content">
+    <div class="music-header">
+      <span class="music-title" id="musicTitle">Sweatlygod Theme</span>
+      <span class="music-time" id="musicTime">0:00 / 0:00</span>
+    </div>
+    <div class="progress-container" id="progressContainer" onclick="seekMusic(event)">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </div>
+</div>
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
 
 <nav>
   <button class="active" onclick="showPage('home', this)">Главная</button>
@@ -610,6 +725,7 @@ footer span { color: var(--accent3); text-shadow: 0 0 15px rgba(0, 229, 255, 0.5
 </footer>
 
 <script>
+// Частицы
 const bg = document.getElementById('bg');
 for (let i = 0; i < 30; i++) {
   const s = document.createElement('span');
@@ -621,6 +737,7 @@ for (let i = 0; i < 30; i++) {
   bg.appendChild(s);
 }
 
+// Навигация
 function showPage(name, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
@@ -628,6 +745,68 @@ function showPage(name, btn) {
   if (btn) btn.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// ===== МУЗЫКАЛЬНЫЙ ПЛЕЕР С ПРОГРЕСС-БАРОМ =====
+const bgMusic = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicBtn');
+const progressBar = document.getElementById('progressBar');
+const progressContainer = document.getElementById('progressContainer');
+const musicTime = document.getElementById('musicTime');
+let musicStarted = false;
+
+function formatTime(sec) {
+  if (isNaN(sec)) return '0:00';
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return m + ':' + (s < 10 ? '0' : '') + s;
+}
+
+function toggleMusic() {
+  if (bgMusic.paused) {
+    bgMusic.volume = 0.3;
+    bgMusic.play().then(() => {
+      musicBtn.textContent = '❚❚';
+      musicBtn.classList.add('playing');
+      musicStarted = true;
+    }).catch(err => console.error(err));
+  } else {
+    bgMusic.pause();
+    musicBtn.textContent = '▶';
+    musicBtn.classList.remove('playing');
+  }
+}
+
+// Обновление прогресс-бара
+bgMusic.addEventListener('timeupdate', () => {
+  if (bgMusic.duration) {
+    const percent = (bgMusic.currentTime / bgMusic.duration) * 100;
+    progressBar.style.width = percent + '%';
+    musicTime.textContent = formatTime(bgMusic.currentTime) + ' / ' + formatTime(bgMusic.duration);
+  }
+});
+
+// Перемотка по клику
+function seekMusic(event) {
+  const rect = progressContainer.getBoundingClientRect();
+  const clickX = event.clientX - rect.left;
+  const percent = clickX / rect.width;
+  if (bgMusic.duration) {
+    bgMusic.currentTime = percent * bgMusic.duration;
+  }
+}
+
+// Автозапуск при первом клике (браузеры блокируют autoplay)
+document.addEventListener('click', function autoStart() {
+  if (!musicStarted && bgMusic.paused) {
+    bgMusic.volume = 0.3;
+    bgMusic.play().then(() => {
+      musicBtn.textContent = '❚❚';
+      musicBtn.classList.add('playing');
+      musicStarted = true;
+    }).catch(() => {});
+  }
+  document.removeEventListener('click', autoStart);
+}, { once: true });
 </script>
 
 </body>
